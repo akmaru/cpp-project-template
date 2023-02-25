@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   base:
-    image: cpp-template:base-latest
+    image: ghcr.io/akmaru/cpp-template-project:base-latest
     build:
       context: docker
       dockerfile: Dockerfile
