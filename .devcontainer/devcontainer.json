@@ -1,0 +1,19 @@
+{
+    "name": "cpp-template",
+    "dockerComposeFile": [
+        "../docker-compose.yml",
+        "docker-compose.yml"
+    ],
+    "service": "dev",
+    "workspaceFolder": "/workspaces/cpp-template",
+    "remoteUser": "developer",
+    "extensions": [
+        "llvm-vs-code-extensions.vscode-clangd",
+        "ms-azuretools.vscode-docker",
+        "MS-CEINTL.vscode-language-pack-ja",
+        "ms-vscode.cmake-tools",
+        "ms-vscode.cpptools",
+        "twxs.cmake",
+        "yzhang.markdown-all-in-one",
+    ]
+}
