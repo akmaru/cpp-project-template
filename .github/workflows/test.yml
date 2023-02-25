@@ -23,10 +23,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cd docker &&
           docker buildx bake \
             --push \
-            -f "${COMPOSE_FILE}"
+            -f docker-compose.yml
             base
 
   # build:
