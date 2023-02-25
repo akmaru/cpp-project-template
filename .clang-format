@@ -1,0 +1,11 @@
+---
+Language:        Cpp
+BasedOnStyle:  Google
+ColumnLimit: 120
+
+AlignAfterOpenBracket: BlockIndent
+AccessModifierOffset: -1
+BinPackArguments: false
+BinPackParameters: false
+DerivePointerAlignment: false
+PointerAlignment: Left
