@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  base:
+    image: cpp-template:base-latest
+    build:
+      context: docker
+      dockerfile: Dockerfile
+      target: base
+
+  dev:
+    image: cpp-template:dev-${HOST_USERNAME}
+    build:
+      context: docker
+      dockerfile: Dockerfile
+      target: dev
+      args:
+        - UID=${HOST_UID}
+        - GID=${HOST_GID}
+    depends_on:
+      - base
+    user: "${HOST_UID}:${HOST_GID}"
+    network_mode: "host"
+    volumes:
+      - .:/workspaces/cpp-template
+    working_dir: /workspaces/cpp-template
+    stdin_open: true
+    tty: true
