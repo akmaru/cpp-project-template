@@ -9,7 +9,7 @@ namespace cpp_template {
 namespace benchmark {
 namespace {
 
-static void BM_vadd(::benchmark::State& state) {
+void BM_vadd(::benchmark::State& state) {
   const std::size_t size = state.range(0);
   const auto a = random_vector<int>(size);
   const auto b = random_vector<int>(size);

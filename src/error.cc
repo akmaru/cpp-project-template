@@ -30,7 +30,9 @@ void maybe_wait() {
 
 }  // namespace
 
-FailMessageStream::FailMessageStream(const std::string msg, const char* func, const char* file, int line, bool is_check)
+FailMessageStream::FailMessageStream(
+    const std::string& msg, const char* func, const char* file, int line, bool is_check
+)
     : msg_(msg), func_(func), file_(file), line_(line), is_check_(is_check) {}
 
 FailMessageStream::~FailMessageStream() {

@@ -7,7 +7,7 @@ namespace cpp_template {
 
 class FailMessageStream {
  public:
-  FailMessageStream(const std::string msg, const char* func, const char* file, int line, bool is_check = true);
+  FailMessageStream(const std::string& msg, const char* func, const char* file, int line, bool is_check = true);
 
   ~FailMessageStream();
 

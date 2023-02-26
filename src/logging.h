@@ -40,11 +40,11 @@ namespace cpp_template {
 #define DCHECK_GE(a, b) CHECK_GE(a, b)
 #endif
 
-#define WARN_ONCE(msg)                                                    \
-  do {                                                                    \
-    static bool logged_##__LINE__ = false;                                \
-    if (!logged_##__LINE__) std::cerr << "WARNING: " << msg << std::endl; \
-    logged_##__LINE__ = true;                                             \
+#define WARN_ONCE(msg)                                                      \
+  do {                                                                      \
+    static bool logged_##__LINE__ = false;                                  \
+    if (!logged_##__LINE__) std::cerr << "WARNING: " << (msg) << std::endl; \
+    logged_##__LINE__ = true;                                               \
   } while (0)
 
 }  // namespace cpp_template
