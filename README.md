@@ -86,9 +86,16 @@ BM_vadd/8192      19511 ns        19506 ns        36428
 ```
 
 ## Format check
+### C/C++ source code
 
 ```sh
 find . -type f -name "*.h" -not -path './build/*' -or -name "*.cc" -not -path './build/*' | xargs clang-format --dry-run -Werror
+```
+
+### CMake
+
+```sh
+find . -type f -name "CMakeLists.txt" -not -path './build/*' -or -name "*.cmake" -not -path './build/*' | xargs cmake-format --check
 ```
 
 ## Lint check
