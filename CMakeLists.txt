@@ -22,18 +22,31 @@ set(CMAKE_CXX_STANDARD 20) # GoogleTest requires at least C++14
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# Compile options
 add_compile_options("$<$<CONFIG:RELEASE>:-O3>")
 add_compile_options("$<$<CONFIG:RELEASE>:-march=native>")
 add_compile_options("$<$<CONFIG:RELEASE>:-mtune=native>")
 
 set(PROJECT_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include)
 
+
+#
+# Src
+#
 add_subdirectory(src)
 
+
+#
+# Test
+#
 enable_testing()
 add_subdirectory(test)
 
+#
+# Benchmark
+#
 add_subdirectory(benchmark)
+
 
 # Installation (https://github.com/forexample/package-example) {
 
@@ -112,3 +125,5 @@ export(
   EXPORT "${TARGETS_EXPORT_NAME}"
   NAMESPACE "${namespace}"
   FILE "${PROJECT_NAME}Config.cmake")
+
+# }
