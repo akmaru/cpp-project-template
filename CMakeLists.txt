@@ -22,6 +22,10 @@ set(CMAKE_CXX_STANDARD 20) # GoogleTest requires at least C++14
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+add_compile_options("$<$<CONFIG:RELEASE>:-O3>")
+add_compile_options("$<$<CONFIG:RELEASE>:-march=native>")
+add_compile_options("$<$<CONFIG:RELEASE>:-mtune=native>")
+
 set(PROJECT_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include)
 
 add_subdirectory(src)
@@ -29,6 +33,7 @@ add_subdirectory(src)
 enable_testing()
 add_subdirectory(test)
 
+add_subdirectory(benchmark)
 
 # Installation (https://github.com/forexample/package-example) {
 
@@ -73,7 +78,6 @@ configure_package_config_file(
 # * headers can be included by C++ code `#include <cpp-template/Bar.hpp>`
 #
 get_cmake_property(test CPPTEMPLATE_EXPORTS)
-message(STATUS ${test})
 install(
   TARGETS ${test}
   EXPORT "${TARGETS_EXPORT_NAME}"
