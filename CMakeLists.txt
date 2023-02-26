@@ -29,12 +29,10 @@ add_compile_options("$<$<CONFIG:RELEASE>:-mtune=native>")
 
 set(PROJECT_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include)
 
-
 #
 # Src
 #
 add_subdirectory(src)
-
 
 #
 # Test
@@ -46,7 +44,6 @@ add_subdirectory(test)
 # Benchmark
 #
 add_subdirectory(benchmark)
-
 
 # Installation (https://github.com/forexample/package-example) {
 
@@ -71,9 +68,8 @@ include(CMakePackageConfigHelpers)
 #
 # * PROJECT_VERSION
 #
-write_basic_package_version_file(
-  "${version_config}"
-  COMPATIBILITY SameMajorVersion)
+write_basic_package_version_file("${version_config}"
+                                 COMPATIBILITY SameMajorVersion)
 
 # Configure '<PROJECT-NAME>Config.cmake'. Use variables:
 #
@@ -108,9 +104,8 @@ install(DIRECTORY include/ DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
 
 # Config * <prefix>/lib/cmake/CppTemplate/CppTemplateConfig.cmake *
 # <prefix>/lib/cmake/CppTemplate/CppTemplateConfigVersion.cmake
-install(
-  FILES "${project_config}" "${version_config}"
-  DESTINATION "${config_install_dir}")
+install(FILES "${project_config}" "${version_config}"
+        DESTINATION "${config_install_dir}")
 
 # Config:
 #
