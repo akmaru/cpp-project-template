@@ -57,9 +57,11 @@ Checks: >
   -google-readability-namespace-comments,
   -google-runtime-references,
   -misc-non-private-member-variables-in-classes,
+  -modernize-avoid-c-arrays,
+  -modernize-concat-nested-namespaces,
+  -modernize-pass-by-value,
   -modernize-return-braced-init-list,
   -modernize-use-trailing-return-type,
-  -modernize-avoid-c-arrays,
   -performance-move-const-arg,
   -readability-braces-around-statements,
   -readability-identifier-length,
@@ -73,7 +75,7 @@ Checks: >
 # Turn all the warnings from the checks above into errors.
 WarningsAsErrors: "*"
 
-HeaderFilterRegex: "(google/cloud/|generator/).*\\.h$"
+HeaderFilterRegex: "^(include|src|test|benchmark).*\\.h$"
 
 CheckOptions:
   - { key: readability-identifier-naming.NamespaceCase,          value: lower_case }
@@ -96,6 +98,8 @@ CheckOptions:
   - { key: readability-identifier-naming.MemberConstantPrefix,     value: k         }
   - { key: readability-identifier-naming.StaticConstantCase,       value: CamelCase }
   - { key: readability-identifier-naming.StaticConstantPrefix,     value: k         }
+  # https://github.com/llvm/llvm-project/issues/46097#issuecomment-992626543
+  - { key: readability-identifier-naming.TypeTemplateParameterIgnoredRegexp, value: expr-type}
   - { key: readability-implicit-bool-conversion.AllowIntegerConditions,  value: 1   }
   - { key: readability-implicit-bool-conversion.AllowPointerConditions,  value: 1   }
   - { key: readability-function-cognitive-complexity.IgnoreMacros,  value: 1   }
