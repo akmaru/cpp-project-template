@@ -9,6 +9,8 @@ on:
 
 env:
   BUILD_TYPE: Release
+  BUILD_PATH: ${{ github.workspace}}/build
+  IMAGE_NAME: ghcr.io/akmaru/cpp-template-project:base-latest
   BASE_TAG: latest
   # Enable if handle merge request 
   # BASE_TAG: ${{ github.run_id }}
@@ -72,10 +74,18 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Configure CMake
-      run: cmake -B ${{ github.workspace }}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -GNinja
+      run: cmake -B ${{env.BUILD_PATH}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -GNinja
 
     - name: Build
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      run: |
+        ls ${{env.BUILD_PATH}}
+        cmake --build ${{env.BUILD_PATH}} --config ${{env.BUILD_TYPE}}
 
     - name: Test
-      run: ctest --test-dir ${{github.workspace}}/build -C ${{env.BUILD_TYPE}}
+      run: ctest --test-dir ${{env.BUILD_PATH}} -C ${{env.BUILD_TYPE}}
+
+    - name: Linter
+      run: find . -type f -name "*.h" -not -path '${{env.BUILD_PATH}}/*' -or -name "*.cc" -not -path '${{env.BUILD_PATH}}/*' | xargs clang-tidy -p ${{env.BUILD_PATH}}
+
+    - name: Benchmark
+      run: ${{env.BUILD_PATH}}/bin/cpp-template_benchmark
