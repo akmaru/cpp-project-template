@@ -1,0 +1,9 @@
+#
+# Packaging
+#
+
+set(CPACK_PACKAGE_VENDOR "Akira Maruoka")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY ${CPACK_PACKAGE_NAME})
+set(CPACK_VERBATIM_VARIABLES TRUE)
+
+include(CPack)

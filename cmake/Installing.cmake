@@ -1,52 +1,3 @@
-cmake_minimum_required(VERSION 3.18.2 FATAL_ERROR)
-
-#
-# Project
-#
-project(
-  CppTemplate
-  DESCRIPTION "A C++ template project"
-  HOMEPAGE_URL "https://github.com/akmaru/cpp-project-template"
-  VERSION 0.1.0
-  LANGUAGES CXX C)
-
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-
-#
-# C/CXX settings
-#
-
-# CXX standards
-set(CMAKE_CXX_STANDARD 20) # GoogleTest requires at least C++14
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-
-# Compile options
-add_compile_options("$<$<CONFIG:RELEASE>:-O3>")
-add_compile_options("$<$<CONFIG:RELEASE>:-march=native>")
-add_compile_options("$<$<CONFIG:RELEASE>:-mtune=native>")
-
-set(PROJECT_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include)
-
-#
-# Src
-#
-add_subdirectory(src)
-
-#
-# Test
-#
-enable_testing()
-add_subdirectory(test)
-
-#
-# Benchmark
-#
-add_subdirectory(benchmark)
-
 # Installation (https://github.com/forexample/package-example) {
 
 # Introduce variables:
@@ -104,15 +55,15 @@ install(
 #
 install(DIRECTORY include/ DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
 
-# Config * <prefix>/lib/cmake/CppTemplate/CppTemplateConfig.cmake *
-# <prefix>/lib/cmake/CppTemplate/CppTemplateConfigVersion.cmake
+# Config * <prefix>/lib/cmake/<PROJECT-NAME>/<PROJECT-NAME>Config.cmake *
+# <prefix>/lib/cmake/<PROJECT-NAME>/<PROJECT-NAME>ConfigVersion.cmake
 install(FILES "${project_config}" "${version_config}"
         DESTINATION "${config_install_dir}")
 
 # Config:
 #
-# * <prefix>/lib/cmake/CppTemplate/CppTemplateTargets.cmake
-# * build/CppTemplateConfig.cmake
+# * <prefix>/lib/cmake/<PROJECT-NAME>/<PROJECT-NAME>Targets.cmake
+# * build/<PROJECT-NAME>Config.cmake
 #
 install(
   EXPORT "${TARGETS_EXPORT_NAME}"
@@ -122,18 +73,3 @@ export(
   EXPORT "${TARGETS_EXPORT_NAME}"
   NAMESPACE "${namespace}"
   FILE "${PROJECT_NAME}Config.cmake")
-
-#
-# Packaging
-#
-
-# If CPACK_PACKAGE_NAME not specified, it defaults to the project name.
-# set(CPACK_PACKAGE_NAME CppTemplate)
-set(CPACK_PACKAGE_VENDOR "Akira Maruoka")
-# If CPACK_PACKAGE_DESCRIPTION_SUMMARY, it defalts to the project description.
-# set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "A C++ template project")
-
-set(CPACK_PACKAGE_INSTALL_DIRECTORY ${CPACK_PACKAGE_NAME})
-set(CPACK_VERBATIM_VARIABLES TRUE)
-
-include(CPack)
