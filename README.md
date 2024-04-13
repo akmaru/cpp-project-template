@@ -103,3 +103,10 @@ find . -type f -name "CMakeLists.txt" -not -path './build/*' -or -name "*.cmake"
 ```sh
 find . -type f -name "*.h" -not -path './build/*' -or -name "*.cc" -not -path './build/*' | xargs clang-tidy -p build
 ```
+
+## Build package
+
+```sh
+cd build
+cpack -G "TGZ"
+```
