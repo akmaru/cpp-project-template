@@ -1,0 +1,97 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  PIPELINE_IMAGE_TAG: ci-${CI_PIPELINE_ID}
+  PIPELINE_IMAGE_NAME: ${CI_REGISTRY_IMAGE}:base-${PIPELINE_IMAGE_TAG}
+  RUNNER_TAG_DOCKER: gitlab-org-docker
+
+stages:
+  - docker
+  - build
+  - lint
+  - test
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "web"
+
+default:
+  image: ${PIPELINE_IMAGE_NAME}
+  tags:
+    - ${RUNNER_TAG_DOCKER}
+
+
+#
+# Docker
+#
+docker:build:
+  stage: docker
+  image: docker:23.0.6-dind
+  services:
+    - docker:23.0.6-dind
+  before_script:
+    - echo ${CI_REGISTRY_PASSWORD} | docker login -u ${CI_REGISTRY_USER} --password-stdin ${CI_REGISTRY}
+    - echo "IMAGE_URL=${CI_REGISTRY_IMAGE}" >> .env
+    - echo "BASE_TAG=${PIPELINE_IMAGE_TAG}" >> .env
+  script:
+    - docker compose build base
+    - docker compose push base
+
+
+#
+# Build
+#
+build:release:
+  stage: build
+  needs: 
+    - job: docker:build
+  script:
+    - cmake -B build -GNinja -DCMAKE_BUILD_TYPE=Release
+    - cmake --build build --config Release
+  artifacts:
+    paths:
+      - build
+    expire_in: 1h
+
+
+#
+# Lint
+#
+lint:clang-format:
+  stage: lint
+  needs:
+    - job: build:release
+  script:
+    - find . -type f -name "*.h" -not -path './build/*' -or -name "*.cc" -not -path './build/*' | xargs clang-format --dry-run -Werror
+
+lint:clang-tidy:
+  stage: lint
+  needs:
+    - job: build:release
+      artifacts: true
+  script:
+    - find . -type f -name "*.h" -not -path './build/*' -or -name "*.cc" -not -path './build/*' | xargs clang-tidy -p build
+
+lint:cmake-format:
+  stage: lint
+  needs:
+    - job: build:release
+  script:
+    - find . -type f -name "CMakeLists.txt" -not -path './build/*' -or -name "*.cmake" -not -path './build/*' | xargs cmake-format --check
+
+
+#
+# Test
+#
+test:release:
+  stage: test
+  needs: 
+    - job: build:release
+      artifacts: true
+  script:
+    - ctest --test-dir build -C Release
+  artifacts:
+    paths:
+      - build
+    expire_in: 1h 
