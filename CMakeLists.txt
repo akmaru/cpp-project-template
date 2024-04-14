@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.18.2 FATAL_ERROR)
 project(
   CppTemplate
   DESCRIPTION "A C++ template project"
-  HOMEPAGE_URL "https://github.com/akmaru/cpp-project-template"
+  HOMEPAGE_URL "https://github.com/akmaru/cpp-template"
   VERSION 0.1.0
   LANGUAGES CXX C)
 
