@@ -1,13 +1,6 @@
 version: "3.9"
 
 services:
-  base:
-    image: ${IMAGE_URL:-ghcr.io/akmaru/cpp-template}:base-${BASE_TAG:-latest}
-    build:
-      context: docker
-      dockerfile: Dockerfile
-      target: base
-
   dev:
     image: cpp-template:dev-${HOST_USERNAME}
     build:
