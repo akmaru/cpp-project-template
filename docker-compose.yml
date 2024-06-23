@@ -1,6 +1,12 @@
 version: "3.9"
 
 services:
+  base:
+    image: ${IMAGE_URL:-ghcr.io/akmaru/cpp-template}:base-${BASE_TAG:-latest}
+    build:
+      context: docker
+      dockerfile: Dockerfile
+      target: base
   dev:
     image: cpp-template:dev-${HOST_USERNAME}
     build:
@@ -10,8 +16,6 @@ services:
       args:
         - UID=${HOST_UID}
         - GID=${HOST_GID}
-    depends_on:
-      - base
     user: "${HOST_UID}:${HOST_GID}"
     network_mode: "host"
     volumes:
