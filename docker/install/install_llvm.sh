@@ -33,3 +33,4 @@ update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-${major}
 update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-${major} 1
 update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-${major} 1
 update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-${major} 1
+update-alternatives --install /usr/bin/run-clang-tidy run-clang-tidy /usr/bin/run-clang-tidy-${major} 1
