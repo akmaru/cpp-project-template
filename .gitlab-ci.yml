@@ -35,8 +35,8 @@ docker:build:
     - echo "IMAGE_URL=${CI_REGISTRY_IMAGE}" >> .env
     - echo "BASE_TAG=${PIPELINE_IMAGE_TAG}" >> .env
   script:
-    - docker compose -f docker-compose.base.yml build base
-    - docker compose -f docker-compose.base.yml push base
+    - docker compose build base
+    - docker compose push base
 
 
 #
