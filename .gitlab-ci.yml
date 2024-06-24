@@ -58,27 +58,26 @@ build:release:
 #
 # Lint
 #
-lint:clang-format:
-  stage: lint
-  needs:
-    - job: build:release
-  script:
-    - find . -type f -name "*.h" -not -path './build/*' -or -name "*.cc" -not -path './build/*' | xargs clang-format --dry-run -Werror
-
-lint:clang-tidy:
+.lint_base:
   stage: lint
   needs:
     - job: build:release
       artifacts: true
+     
+lint:clang-format:
+  extends: .lint_base
   script:
-    - find . -type f -name "*.h" -not -path './build/*' -or -name "*.cc" -not -path './build/*' | xargs clang-tidy -p build
+    - ./scripts/lint/check_clang_format.sh
+
+lint:clang-tidy:
+  extends: .lint_base
+  script:
+    - ./scripts/lint/check_clang_tidy.sh build
 
 lint:cmake-format:
-  stage: lint
-  needs:
-    - job: build:release
+  extends: .lint_base
   script:
-    - find . -type f -name "CMakeLists.txt" -not -path './build/*' -or -name "*.cmake" -not -path './build/*' | xargs cmake-format --check
+    - ./scripts/lint/check_cmake_format.sh
 
 
 #

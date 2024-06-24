@@ -1,7 +1,7 @@
 #
 # base image
 #
-FROM ubuntu:22.04 AS base
+FROM --platform=linux/amd64 ubuntu:22.04 AS base
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG C.UTF-8
