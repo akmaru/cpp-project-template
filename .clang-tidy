@@ -3,37 +3,6 @@
 
 # Here is an explanation for why some of the checks are disabled:
 #
-#  -google-readability-namespace-comments: the *_CLIENT_NS is a macro, and
-#      clang-tidy fails to match it against the initial value.
-#
-#  -modernize-use-trailing-return-type: clang-tidy recommends using
-#      `auto Foo() -> std::string { return ...; }`, we think the code is less
-#      readable in this form.
-#
-#  -modernize-return-braced-init-list: We think removing typenames and using
-#      only braced-init can hurt readability.
-#
-#  -modernize-avoid-c-arrays: We only use C arrays when they seem to be the
-#      right tool for the job, such as `char foo[] = "hello"`. In these cases,
-#      avoiding C arrays often makes the code less readable, and std::array is
-#      not a drop-in replacement because it doesn't deduce the size.
-#
-#  -performance-move-const-arg: This warning requires the developer to
-#      know/care more about the implementation details of types/functions than
-#      should be necessary. For example, `A a; F(std::move(a));` will trigger a
-#      warning IFF `A` is a trivial type (and therefore the move is
-#      meaningless). It would also warn if `F` accepts by `const&`, which is
-#      another detail that the caller need not care about.
-#
-#  -readability-redundant-declaration: A friend declaration inside a class
-#      counts as a declaration, so if we also declare that friend outside the
-#      class in order to document it as part of the public API, that will
-#      trigger a redundant declaration warning from this check.
-#
-#  -readability-function-cognitive-complexity: too many false positives with
-#      clang-tidy-12. We need to disable this check in macros, and that setting
-#      only appears in clang-tidy-13.
-#
 #  -bugprone-narrowing-conversions: too many false positives around
 #      `std::size_t`  vs. `*::difference_type`.
 #
@@ -43,9 +12,49 @@
 #     Almost any expression of the form `2 * variable` or `long x = a_int * b_int;`
 #     generates an error.
 #
+#  -misc-include-cleaner: This check is disabled because it is too aggressive.
+#
+#  -modernize-avoid-c-arrays: We only use C arrays when they seem to be the
+#      right tool for the job, such as `char foo[] = "hello"`. In these cases,
+#      avoiding C arrays often makes the code less readable, and std::array is
+#      not a drop-in replacement because it doesn't deduce the size.
+#
+#  -modernize-concat-nested-namespaces: clang-tidy recommends
+#      `namespace foo::bar {}` over `namespace foo { namespace bar { } }`
+#      We need to support C++14, which does not supported nested namespaces.
+#
+#  -modernize-return-braced-init-list: We think removing typenames and using
+#      only braced-init can hurt readability.
+#
+#  -modernize-use-nodiscard: clang-tidy recommends adding a nodiscard annotation
+#      to functions where the return value should not be ignored.
+#      We need to support C++14, which does not supported the annotation.
+#
+#  -modernize-use-trailing-return-type: clang-tidy recommends using
+#      `auto Foo() -> std::string { return ...; }`, we think the code is less
+#      readable in this form.
+#
+#  -performance-enum-size: Smaller enums may or not may be faster, it depends on
+#      the architechture. If data size was a consideration, we might decide to
+#      enable the warnings.
+#
+#  -performance-move-const-arg: This warning requires the developer to
+#      know/care more about the implementation details of types/functions than
+#      should be necessary. For example, `A a; F(std::move(a));` will trigger a
+#      warning IFF `A` is a trivial type (and therefore the move is
+#      meaningless). It would also warn if `F` accepts by `const&`, which is
+#      another detail that the caller need not care about.
+#
+#  -readability-identifier-length: Short variable names may be used in some contexts.
+#      (e.g., x and y for coordinate systems) 
+#
+#  -readability-redundant-declaration: A friend declaration inside a class
+#      counts as a declaration, so if we also declare that friend outside the
+#      class in order to document it as part of the public API, that will
+#      trigger a redundant declaration warning from this check.
+#
 Checks: >
   -*,
-  abseil-*,
   bugprone-*,
   google-*,
   misc-*,
@@ -53,25 +62,25 @@ Checks: >
   performance-*,
   portability-*,
   readability-*,
-  -google-readability-braces-around-statements,
-  -google-readability-namespace-comments,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-implicit-widening-of-multiplication-result,
+  -bugprone-narrowing-conversions,
   -google-runtime-references,
+  -misc-include-cleaner,
   -misc-non-private-member-variables-in-classes,
   -modernize-avoid-c-arrays,
   -modernize-concat-nested-namespaces,
   -modernize-pass-by-value,
   -modernize-return-braced-init-list,
+  -modernize-use-nodiscard,
   -modernize-use-trailing-return-type,
+  -performance-enum-size,
   -performance-move-const-arg,
-  -readability-braces-around-statements,
   -readability-identifier-length,
   -readability-magic-numbers,
   -readability-named-parameter,
-  -readability-redundant-declaration,
-  -readability-function-cognitive-complexity,
-  -bugprone-narrowing-conversions,
-  -bugprone-easily-swappable-parameters,
-  -bugprone-implicit-widening-of-multiplication-result
+  -readability-redundant-declaration
+
 # Turn all the warnings from the checks above into errors.
 WarningsAsErrors: "*"
 
@@ -98,8 +107,6 @@ CheckOptions:
   - { key: readability-identifier-naming.MemberConstantPrefix,     value: k         }
   - { key: readability-identifier-naming.StaticConstantCase,       value: CamelCase }
   - { key: readability-identifier-naming.StaticConstantPrefix,     value: k         }
-  # https://github.com/llvm/llvm-project/issues/46097#issuecomment-992626543
-  - { key: readability-identifier-naming.TypeTemplateParameterIgnoredRegexp, value: expr-type}
   - { key: readability-implicit-bool-conversion.AllowIntegerConditions,  value: 1   }
   - { key: readability-implicit-bool-conversion.AllowPointerConditions,  value: 1   }
   - { key: readability-function-cognitive-complexity.IgnoreMacros,  value: 1   }
