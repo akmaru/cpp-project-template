@@ -1,11 +1,13 @@
 #!/bin/bash
 set -euo pipefail
 
-if [ -z ${1+x} ]; then
-    major=16
-else
-    major=$1
+if [ $# != 1 ]; then
+  echo "Error: Not specified <llvm_major_version>"
+  echo "Usage: $0 <llvm_major_version>"
+  exit 1
 fi
+
+major=$1
 
 apt-get update && apt-get install -y --no-install-recommends \
     gnupg \
