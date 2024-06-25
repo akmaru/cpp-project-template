@@ -2,7 +2,9 @@
 
 #include <gtest/gtest.h>
 
+#include <cstddef>
 #include <ranges>
+#include <vector>
 
 namespace cpp_template {
 namespace {
