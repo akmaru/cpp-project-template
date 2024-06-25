@@ -1,6 +1,6 @@
 #include <benchmark/benchmark.h>
 
-#include <ranges>
+#include <cstddef>
 
 #include "cpp-template/vadd.h"
 #include "util.h"

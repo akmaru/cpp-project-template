@@ -1,7 +1,5 @@
 #include "error.h"
 
-#include <sys/types.h>
-
 #ifdef _WIN32
 #include <Windows.h>
 #else
@@ -10,6 +8,7 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <string>
 
 namespace cpp_template {
 namespace {
@@ -21,9 +20,11 @@ pid_t get_pid() { return getpid(); }
 #endif
 
 void maybe_wait() {
-  if (!std::getenv("CPP_TEMPLATE_WAIT_ON_CRASH")) return;
+  if (!std::getenv("CPP_TEMPLATE_WAIT_ON_CRASH")) {
+    return;
+  }
   std::cout << "Waiting before crash. You can attach gdb by\n"
-            << "$ gdb -p " << get_pid() << std::endl;
+            << "$ gdb -p " << get_pid() << '\n';
   std::string line;
   std::getline(std::cin, line);
 }
@@ -37,11 +38,11 @@ FailMessageStream::FailMessageStream(
 
 FailMessageStream::~FailMessageStream() {
   if (is_check_) {
-    std::cerr << msg_ << " in " << func_ << " at " << file_ << ":" << line_ << ": " << oss_.str() << std::endl;
+    std::cerr << msg_ << " in " << func_ << " at " << file_ << ":" << line_ << ": " << oss_.str() << '\n';
     maybe_wait();
     std::abort();
   } else {
-    std::cerr << oss_.str() << std::endl;
+    std::cerr << oss_.str() << '\n';
     maybe_wait();
     std::exit(1);
   }

@@ -11,7 +11,7 @@ COPY install/install_ubuntu_pkg.sh /install/
 RUN /install/install_ubuntu_pkg.sh
 
 COPY install/install_llvm.sh /install/
-RUN /install/install_llvm.sh
+RUN /install/install_llvm.sh 18
 
 COPY install/install_cmake.sh /install/
 RUN /install/install_cmake.sh

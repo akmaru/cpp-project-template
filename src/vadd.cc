@@ -1,7 +1,9 @@
 #include <cpp-template/vadd.h>
 
 #include <algorithm>
-#include <ranges>
+#include <iterator>
+#include <type_traits>
+#include <vector>
 
 #include "logging.h"
 
