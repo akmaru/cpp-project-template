@@ -16,6 +16,11 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 #
+# Options
+#
+option(WITH_DOCS "Build documents" OFF)
+
+#
 # C/CXX settings
 #
 
@@ -46,6 +51,13 @@ add_subdirectory(test)
 # Benchmark
 #
 add_subdirectory(benchmark)
+
+#
+# Document
+#
+if(WITH_DOCS)
+  add_subdirectory(docs)
+endif()
 
 #
 # Installation
