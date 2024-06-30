@@ -19,6 +19,8 @@ RUN /install/install_cmake.sh
 COPY install/install_cmake_format.sh /install/
 RUN /install/install_cmake_format.sh
 
+COPY install/install_doxygen.sh /install/
+RUN /install/install_doxygen.sh 1.10.0
 
 #
 # dev image
